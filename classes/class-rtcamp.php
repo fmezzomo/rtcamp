@@ -1,7 +1,8 @@
 <?php
 class RTCamp {
     public function __construct() {
-        add_action('init', array($this, 'register_slideshow_block'));
+        add_action( 'init', array( $this, 'register_slideshow_block' ) );
+        add_action( 'enqueue_block_assets', array( $this, 'slideshow_block_assets' ) );
     }
 
     public function register_slideshow_block() {
@@ -15,6 +16,22 @@ class RTCamp {
             'editor_script' => 'rtcamp-slideshow-block',
             'render_callback' => array($this, 'render_slideshow'),
         ) );
+    }
+
+    // Enqueue block editor script and style
+    function slideshow_block_assets() {
+        wp_enqueue_style(
+            'my-slideshow-style',
+            plugins_url('../css/style.css', __FILE__),
+        );
+
+        wp_enqueue_script(
+            'my-slideshow-script',
+            plugins_url('../js/slideshow.js', __FILE__),
+            array(),
+            '1.0',
+            true
+        );
     }
 
     public function render_slideshow() {
@@ -32,11 +49,11 @@ class RTCamp {
         }
 
         // Build slideshow HTML
-        ob_start(); 
+        ob_start();
         ?>
         <div class="slideshow">
             <?php foreach ($posts as $post): ?>
-                <div class="slide" >
+                <div class="slide" style="display: none;">
                     <a href="<?php echo esc_url($post['link']); ?>">
                         <h2><?php echo esc_html($post['title']['rendered']); ?></h2>
                         <img src="<?php echo esc_url($post['jetpack_featured_media_url']); ?>" alt="<?php echo esc_attr($post['title']['rendered']); ?>" />
@@ -47,7 +64,6 @@ class RTCamp {
             <button class="prev">Previous</button>
             <button class="next">Next</button>
         </div>
-        
         <?php
         return ob_get_clean();
     }
