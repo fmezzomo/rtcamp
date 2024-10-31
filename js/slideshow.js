@@ -6,4 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (slides.length > 0) {
         slides[currentIndex].style.display = 'block';
     }
+
+    function changeSlide(direction) {
+        slides[currentIndex].style.display = 'none';
+        currentIndex = (currentIndex + direction + slides.length) % slides.length;
+        slides[currentIndex].style.display = 'block';
+    }
+
+    document.querySelector('.next').addEventListener('click', () => changeSlide(1));
+    document.querySelector('.prev').addEventListener('click', () => changeSlide(-1));
+
 });
