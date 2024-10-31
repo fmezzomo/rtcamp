@@ -21,4 +21,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'ArrowRight') changeSlide(1);
         if (e.key === 'ArrowLeft') changeSlide(-1);
     });
+
+    const urlInput = document.getElementById('url-input');
+    const changeButton = document.getElementById('change-slideshow');
+
+    if (changeButton) {
+        changeButton.addEventListener('click', function() {
+            const newUrl = urlInput.value.trim();
+            if (newUrl) {
+                window.location.search = '?url=' + encodeURIComponent(newUrl);
+            }
+        });
+    }
 });

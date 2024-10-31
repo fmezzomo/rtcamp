@@ -43,14 +43,21 @@ class RTCamp {
     }
 
     public function render_slideshow( $attributes ) {
-        $url = !empty($attributes['url']) ? esc_url($attributes['url']) : $this->URLAPI;
 
-        $parsed_url = parse_url($url);
-        $domain     = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' . $parsed_url['host'] : $parsed_url['host'];
+        $input_url = isset( $_GET[ 'url' ] ) ? trim( $_GET[ 'url' ] ) : $attributes[ 'url' ];
+    
+        if ( ! preg_match( "~^(?:f|ht)tps?://~i", $input_url ) ) {
+            $input_url = 'https://' . $input_url;
+        }
 
-        $api_url = rtrim($domain, '/') . '/wp-json/wp/v2/posts';
+        $url = filter_var( $input_url, FILTER_VALIDATE_URL ) ? esc_url_raw( $input_url ) : $this->URLAPI;
 
-        $response = wp_remote_get( $api_url );
+        $parsedUrl = parse_url( $url );
+        $domain    = isset( $parsedUrl[ 'scheme'] ) ? $parsedUrl[ 'scheme' ] . '://' . $parsedUrl[ 'host' ] : $parsedUrl[ 'host' ];
+
+        $apiUrl = rtrim( $domain, '/' ) . '/wp-json/wp/v2/posts';
+
+        $response = wp_remote_get( $apiUrl );
 
         if ( is_wp_error( $response ) ) {
             return '<div>Error fetching posts.</div>';
