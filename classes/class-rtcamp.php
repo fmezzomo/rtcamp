@@ -50,8 +50,8 @@ class RTCamp {
 
         $output  = '<div class="slideshow">';
         foreach ( $posts as $post ) {
-            $output .= '<div class="slide" style="display: none;">';
-            $output .= '    <a href="' . esc_url( $post[ 'link' ] ) . '">';
+            $output .= '<div class="slide">';
+            $output .= '    <a href="' . esc_url( $post[ 'link' ] ) . '" target="_blank">';
             $output .= '        <h2>'. esc_html( $post[ 'title' ][ 'rendered' ]) . '</h2>';
             $output .= '        <img src="' . esc_url( $post[ 'jetpack_featured_media_url' ] ) . '" alt="'. esc_attr( $post[ 'title' ][ 'rendered' ] ) . '" />';
             $output .= '        <p>' . esc_html( date( 'F j, Y', strtotime( $post[ 'date' ] ) ) ) . '</p>';
