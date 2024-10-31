@@ -16,4 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.next').addEventListener('click', () => changeSlide(1));
     document.querySelector('.prev').addEventListener('click', () => changeSlide(-1));
 
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') changeSlide(1);
+        if (e.key === 'ArrowLeft') changeSlide(-1);
+    });
 });
