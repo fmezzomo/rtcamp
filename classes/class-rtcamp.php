@@ -5,7 +5,6 @@ class RTCamp {
     }
 
     public function register_slideshow_block() {
-
         wp_register_script(
             'rtcamp-slideshow-block',
             plugins_url('../js/block.js', __FILE__),
@@ -14,6 +13,11 @@ class RTCamp {
 
         register_block_type('rtcamp/slideshow', array(
             'editor_script' => 'rtcamp-slideshow-block',
+            'render_callback' => array($this, 'render_slideshow'),
         ) );
+    }
+
+    public function render_slideshow() {
+        return '<div>No posts found.</div>';
     }
 }
