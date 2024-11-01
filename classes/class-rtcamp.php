@@ -41,6 +41,7 @@ class RTCamp {
             'editor_script'   => 'rtcamp-slideshow-block',
             'render_callback' => array( $this, 'render_slideshow' ),
             'attributes'      => array(
+                'textDomain'           => array( 'type' => 'string', 'default'  => $defaultAttributes[ 'textDomain' ] ),
                 'url'                  => array( 'type' => 'string', 'default'  => $defaultAttributes[ 'url' ] ),
                 'showTitle'            => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'showTitle' ] ),
                 'imageUrl'             => array( 'type' => 'string', 'default'  => $defaultAttributes[ 'imageUrl' ] ),
@@ -82,6 +83,13 @@ class RTCamp {
 
     public function render_slideshow( $attributes ) {
 
+        $textDomain = $attributes[ 'textDomain' ];
+
+        $urlContainer  = '    <div class="url-container">';
+        $urlContainer .= '        <input type="text" id="url-input" placeholder="' . __( 'Enter URL to get Data...', $textDomain ) . '" />';
+        $urlContainer .= '        <button id="change-slideshow">' . __( 'Apply URL', $textDomain ) . '</button>';
+        $urlContainer .= '    </div>';
+
         $tryCache = true;
         $inputURL = $attributes[ 'url' ];
         if ( isset( $_GET[ 'url' ] ) ) {
@@ -111,7 +119,7 @@ class RTCamp {
             $response = wp_remote_get( $apiUrl );
 
             if ( is_wp_error( $response ) ) {
-                return '<div>Error fetching posts.</div>';
+                return $urlContainer . '<div>Error fetching posts.</div>';
             }
 
             $posts = json_decode( wp_remote_retrieve_body( $response ), true );
@@ -123,7 +131,7 @@ class RTCamp {
         }
 
         if ( empty( $posts ) ) {
-            return '<div>No posts found.</div>';
+            return $urlContainer . '<div>No posts found.</div>';
         }
 
         $showTitle            = $attributes[ 'showTitle' ];
@@ -139,10 +147,9 @@ class RTCamp {
         $arrowIconRight       = $attributes[ 'arrowIconRight' ];
         $arrowBackgroundColor = $attributes[ 'arrowBackgroundColor' ];
 
-        $output  = '<div class="slideshow-container">';
-        $output .= '    <input type="text" id="url-input" placeholder="Enter URL..." />';
-        $output .= '    <button id="change-slideshow">Apply URL</button>';
-        $output .= '    <div class="slideshow">';
+        $output  = '<div >';
+        $output .=     $urlContainer;
+        $output .= '    <div class="slideshow" class="slideshow-container" style="background-color:' . esc_attr( $backgroundColor ) . ';">';
     
         if ( $showArrows ) {
             $output .= '<div class="arrows">';

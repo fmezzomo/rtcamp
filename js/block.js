@@ -14,6 +14,7 @@
         category: 'widgets',
 
         attributes: {
+            textDomain: { type: 'string', default: rtcampDefaults.textDomain },
             url: { type: 'string', default: rtcampDefaults.url },
             showTitle: { type: 'boolean', default: rtcampDefaults.showTitle },
             imageUrl: { type: 'string', default: rtcampDefaults.imageUrl },
@@ -32,7 +33,7 @@
 
         edit: function( props ) {
             const { attributes, setAttributes } = props;
-            const { showTitle, imageUrl, showExcerpt, showDate, autoScroll, scrollInterval, showArrows, backgroundColor, textColor, arrowIconLeft, arrowIconRight, arrowColor, arrowBackgroundColor } = attributes;
+            const { textDomain, showTitle, imageUrl, showExcerpt, showDate, autoScroll, scrollInterval, showArrows, backgroundColor, textColor, arrowIconLeft, arrowIconRight, arrowColor, arrowBackgroundColor } = attributes;
 
             return el(
                 'div',
@@ -47,7 +48,7 @@
                     showTitle && el( 
                         'h3', 
                         { style: { color: textColor } }, 
-                        __( 'Example Post Title', 'text-domain' ) 
+                        __( 'Example Post Title', textDomain ) 
                     ),
                     el( 'img', { 
                         src: imageUrl,
@@ -57,12 +58,12 @@
                     showDate && el( 
                         'p', 
                         { style: { color: textColor } }, 
-                        __( 'November 1, 2024', 'text-domain' ) 
+                        __( 'November 1, 2024', textDomain ) 
                     ),
                     showExcerpt && el( 
                         'p', 
                         { style: { color: '#333', fontSize: '16px' } }, 
-                        __( 'Example of post content or excerpt that will be displayed here.', 'text-domain' ) 
+                        __( 'Example of post content or excerpt that will be displayed here.', textDomain ) 
                     ),
                 ),
                 showArrows && el(
@@ -152,12 +153,12 @@
                             }
                         ),
                         showArrows && el( wp.components.TextControl, {
-                            label: __('Arrow Left Icon Class', 'text-domain'),
+                            label: __('Arrow Left Icon Class', textDomain),
                             value: arrowIconLeft,
                             onChange: (value) => setAttributes({ arrowIconLeft: value })
                         }),
                         showArrows && el( wp.components.TextControl, {
-                            label: __('Arrow Right Icon Class', 'text-domain'),
+                            label: __('Arrow Right Icon Class', textDomain),
                             value: arrowIconRight,
                             onChange: (value) => setAttributes({ arrowIconRight: value })
                         }),
