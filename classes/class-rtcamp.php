@@ -19,6 +19,8 @@ class RTCamp {
             'showArrows'           => true,
             'backgroundColor'      => '#ffffff',
             'textColor'            => '#000000',
+            'arrowIconLeft'        => 'fa-chevron-left',
+            'arrowIconRight'       => 'fa-chevron-right',
             'arrowColor'           => '#ffffff',
             'arrowBackgroundColor' => '#000000',
         );
@@ -45,6 +47,8 @@ class RTCamp {
                 'showArrows'           => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'showArrows' ] ),
                 'backgroundColor'      => array( 'type' => 'string', 'default' => $defaultAttributes[ 'backgroundColor' ] ),
                 'textColor'            => array( 'type' => 'string', 'default' => $defaultAttributes[ 'textColor' ] ),
+                'arrowIconLeft'        => array( 'type' => 'string', 'default' => $defaultAttributes[ 'arrowIconLeft' ] ),
+                'arrowIconRight'       => array( 'type' => 'string', 'default' => $defaultAttributes[ 'arrowIconRight' ] ),
                 'arrowColor'           => array( 'type' => 'string', 'default' => $defaultAttributes[ 'arrowColor' ] ),
                 'arrowBackgroundColor' => array( 'type' => 'string', 'default' => $defaultAttributes[ 'arrowBackgroundColor' ] ),
             ),
@@ -64,6 +68,11 @@ class RTCamp {
             array(),
             '1.0',
             true
+        );
+
+        wp_enqueue_style(
+            'font-awesome',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'
         );
     }
 
@@ -136,8 +145,13 @@ class RTCamp {
     
         if ( $showArrows ) {
             $output .= '<div class="arrows">';
-            $output .= '    <button class="prev" style="background-color:' . esc_attr( $arrowBackgroundColor ) . '; color:' . esc_attr( $arrowColor ) . ';">◀</button>';
-            $output .= '    <button class="next" style="background-color:' . esc_attr( $arrowBackgroundColor ) . '; color:' . esc_attr( $arrowColor ) . ';">▶</button>';
+            $output .= '    <button class="prev" style="background-color:' . esc_attr( $attributes[ 'arrowBackgroundColor' ] ) . '; color:' . esc_attr( $attributes[ 'arrowColor' ] ) . ';">';
+            $output .= '        <i class="fas ' . esc_attr( $attributes[ 'arrowIconLeft' ] ) . '"></i>';
+            $output .= '    </button>';
+
+            $output .= '    <button class="next" style="background-color:' . esc_attr( $attributes[ 'arrowBackgroundColor' ] ) . '; color:' . esc_attr( $attributes[ 'arrowColor' ] ) . ';">';
+            $output .= '        <i class="fas ' . esc_attr( $attributes[ 'arrowIconRight' ] ) . '"></i>';
+            $output .= '    </button>';
             $output .= '</div>';
         }
     

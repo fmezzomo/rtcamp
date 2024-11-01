@@ -23,13 +23,15 @@
             showArrows: { type: 'boolean', default: rtcampDefaults.showArrows },
             backgroundColor: { type: 'string', default: rtcampDefaults.backgroundColor },
             textColor: { type: 'string', default: rtcampDefaults.textColor },
+            arrowIconLeft: { type: 'string', default: rtcampDefaults.arrowIconLeft },
+            arrowIconRight: { type: 'string', default: rtcampDefaults.arrowIconRight },
             arrowColor: { type: 'string', default: rtcampDefaults.arrowColor },
             arrowBackgroundColor: { type: 'string', default: rtcampDefaults.arrowBackgroundColor },
         },
 
         edit: function( props ) {
             const { attributes, setAttributes } = props;
-            const { showTitle, showExcerpt, showDate, autoScroll, scrollInterval, showArrows, backgroundColor, textColor, arrowColor, arrowBackgroundColor } = attributes;
+            const { showTitle, showExcerpt, showDate, autoScroll, scrollInterval, showArrows, backgroundColor, textColor, arrowIconLeft, arrowIconRight, arrowColor, arrowBackgroundColor } = attributes;
 
             return el(
                 'div',
@@ -64,16 +66,32 @@
                 ),
                 showArrows && el(
                     'div',
-                    { className: 'arrows' }, 
+                    { className: 'arrows' },
                     el(
                         'button',
-                        { style: { left: '30px', backgroundColor: arrowBackgroundColor, color: arrowColor } },
-                        '◀'
+                        {
+                            style: {
+                                left: '30px',
+                                backgroundColor: arrowBackgroundColor,
+                                color: arrowColor,
+                                border: 'none',
+                                padding: '10px',
+                            }
+                        },
+                        el('i', { className: 'fas ' + arrowIconLeft })
                     ),
                     el(
                         'button',
-                        { style: { right: '30px', backgroundColor: arrowBackgroundColor, color: arrowColor } },
-                        '▶'
+                        {
+                            style: {
+                                right: '30px',
+                                backgroundColor: arrowBackgroundColor,
+                                color: arrowColor,
+                                border: 'none',
+                                padding: '10px',
+                            }
+                        },
+                        el('i', { className: 'fas ' + arrowIconRight })
                     )
                 ),
                 el(
@@ -132,6 +150,40 @@
                                 onChange: value => setAttributes({ showArrows: value })
                             }
                         ),
+                        showArrows && el( wp.components.TextControl, {
+                            label: __('Arrow Left Icon Class', 'text-domain'),
+                            value: arrowIconLeft,
+                            onChange: (value) => setAttributes({ arrowIconLeft: value })
+                        }),
+                        showArrows && el( wp.components.TextControl, {
+                            label: __('Arrow Right Icon Class', 'text-domain'),
+                            value: arrowIconRight,
+                            onChange: (value) => setAttributes({ arrowIconRight: value })
+                        }),
+                        showArrows && el(
+                            'p',
+                            { style: { marginBottom: '5px' } },
+                            'Arrow Background Color'
+                        ),
+                        showArrows && el(
+                            ColorPalette,
+                            {
+                                value: arrowBackgroundColor,
+                                onChange: value => setAttributes({ arrowBackgroundColor: value })
+                            }
+                        ),
+                        showArrows && el(
+                            'p',
+                            { style: { marginBottom: '5px' } },
+                            'Arrow Color'
+                        ),
+                        showArrows && el(
+                            ColorPalette,
+                            {
+                                value: arrowColor,
+                                onChange: value => setAttributes({ arrowColor: value })
+                            }
+                        ),
                         el(
                             'p',
                             { style: { marginBottom: '5px' } },
@@ -154,30 +206,6 @@
                             {
                                 value: textColor,
                                 onChange: value => setAttributes({ textColor: value })
-                            }
-                        ),
-                        el(
-                            'p',
-                            { style: { marginBottom: '5px' } },
-                            'Arrow Background Color'
-                        ),
-                        el(
-                            ColorPalette,
-                            {
-                                value: arrowBackgroundColor,
-                                onChange: value => setAttributes({ arrowBackgroundColor: value })
-                            }
-                        ),
-                        el(
-                            'p',
-                            { style: { marginBottom: '5px' } },
-                            'Arrow Color'
-                        ),
-                        el(
-                            ColorPalette,
-                            {
-                                value: arrowColor,
-                                onChange: value => setAttributes({ arrowColor: value })
                             }
                         )
                     )
