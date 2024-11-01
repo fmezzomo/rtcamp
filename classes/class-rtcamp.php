@@ -90,7 +90,7 @@ class RTCamp {
         $inputURL   = $attributes[ 'url' ];
 
         $urlContainer  = '    <div class="url-container">';
-        $urlContainer .= '      <input type="text" id="url-input" placeholder="' . __( 'Enter URL to get Data...', $textDomain ) . '" />';
+        $urlContainer .= '      <input type="text" id="url-input" placeholder="' . __( 'Enter URL to Fetch Data...', $textDomain ) . '" />';
         $urlContainer .= '      <button id="change-slideshow">' . __( 'Apply URL', $textDomain ) . '</button>';
 
         if ( isset( $_GET[ 'url' ] ) ) {
