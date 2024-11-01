@@ -33,14 +33,14 @@
 
             return el(
                 'div',
-                { 
-                    style: { 
-                        backgroundColor, 
-                        color: textColor, 
-                        padding: '20px', 
-                        border: '1px solid #ccc', 
-                        borderRadius: '5px' 
-                    } 
+                { className: 'slideshow',
+                style: { 
+                    backgroundColor, 
+                    color: textColor, 
+                    padding: '20px', 
+                    border: '1px solid #ccc', 
+                    borderRadius: '5px'
+                } 
                 },
                 showTitle && el( 
                     'p', 
@@ -49,8 +49,8 @@
                 ),
                 el(
                     'div',
-                    { style: { width: '100%', height: '150px', backgroundColor: '#eaeaea', marginBottom: '10px' } },
-                    el( 'span', { style: { display: 'block', textAlign: 'center', paddingTop: '60px', color: '#999' } }, __( 'Image not available', 'text-domain' ) )
+                    { style: { width: '100%', height: '300px', backgroundColor: '#eaeaea', marginBottom: '10px' } },
+                    el( 'span', { style: { display: 'block', textAlign: 'center', paddingTop: '140px', color: '#999' } }, __( 'Image not available', 'text-domain' ) )
                 ),
                 showDate && el( 
                     'p', 
@@ -64,15 +64,15 @@
                 ),
                 showArrows && el(
                     'div',
-                    { style: { display: 'flex', justifyContent: 'space-between', marginTop: '10px' } },
+                    { className: 'arrows' }, 
                     el(
                         'button',
-                        { style: { backgroundColor: arrowBackgroundColor, color: arrowColor, border: 'none', cursor: 'pointer', padding: '10px' } },
+                        { style: { left: '30px', backgroundColor: arrowBackgroundColor, color: arrowColor } },
                         '◀'
                     ),
                     el(
                         'button',
-                        { style: { backgroundColor: arrowBackgroundColor, color: arrowColor, border: 'none', cursor: 'pointer', padding: '10px' } },
+                        { style: { right: '30px', backgroundColor: arrowBackgroundColor, color: arrowColor } },
                         '▶'
                     )
                 ),

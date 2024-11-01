@@ -1,13 +1,17 @@
 .slideshow {
     position: relative;
-    width: 100%;
     overflow: hidden;
 }
 
-.slideshow button {
+.slideshow .arrows button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10;
 }
 
 .prev {

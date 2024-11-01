@@ -135,8 +135,10 @@ class RTCamp {
         }
     
         if ( $showArrows ) {
-            $output .= '<button class="prev" style="background-color:' . esc_attr( $arrowBackgroundColor ) . '; color:' . esc_attr( $arrowColor ) . ';">Previous</button>';
-            $output .= '<button class="next" style="background-color:' . esc_attr( $arrowBackgroundColor ) . '; color:' . esc_attr( $arrowColor ) . ';">Next</button>';
+            $output .= '<div class="arrows">';
+            $output .= '    <button class="prev" style="background-color:' . esc_attr( $arrowBackgroundColor ) . '; color:' . esc_attr( $arrowColor ) . ';">◀</button>';
+            $output .= '    <button class="next" style="background-color:' . esc_attr( $arrowBackgroundColor ) . '; color:' . esc_attr( $arrowColor ) . ';">▶</button>';
+            $output .= '</div>';
         }
     
         $output .= '</div>';
