@@ -1,10 +1,11 @@
-( function( blocks, element, blockEditor, components ) {
+( function( blocks, element, blockEditor, components, i18n ) {
     var el = element.createElement;
     var InspectorControls = blockEditor.InspectorControls;
     var PanelBody = components.PanelBody;
     var ToggleControl = components.ToggleControl;
     var ColorPalette = components.ColorPalette;
     var RangeControl = components.RangeControl;
+    var __ = i18n.__;
 
     blocks.registerBlockType('rtcamp/slideshow', {
         title: 'rtCamp Block Slideshow',
@@ -22,16 +23,59 @@
             showArrows: { type: 'boolean', default: rtcampDefaults.showArrows },
             backgroundColor: { type: 'string', default: rtcampDefaults.backgroundColor },
             textColor: { type: 'string', default: rtcampDefaults.textColor },
+            arrowColor: { type: 'string', default: rtcampDefaults.arrowColor },
+            arrowBackgroundColor: { type: 'string', default: rtcampDefaults.arrowBackgroundColor },
         },
 
         edit: function( props ) {
             const { attributes, setAttributes } = props;
-            const { showTitle, showExcerpt, showDate, autoScroll, scrollInterval, showArrows, backgroundColor, textColor } = attributes;
+            const { showTitle, showExcerpt, showDate, autoScroll, scrollInterval, showArrows, backgroundColor, textColor, arrowColor, arrowBackgroundColor } = attributes;
 
             return el(
                 'div',
-                { style: { backgroundColor, color: textColor, padding: '20px' } },
-                el( 'p', {}, 'Slideshow Block' ),
+                { 
+                    style: { 
+                        backgroundColor, 
+                        color: textColor, 
+                        padding: '20px', 
+                        border: '1px solid #ccc', 
+                        borderRadius: '5px' 
+                    } 
+                },
+                showTitle && el( 
+                    'p', 
+                    { style: { fontWeight: 'bold', fontSize: '18px', marginBottom: '10px' } }, 
+                    __( 'Example Post Title', 'text-domain' ) 
+                ),
+                el(
+                    'div',
+                    { style: { width: '100%', height: '150px', backgroundColor: '#eaeaea', marginBottom: '10px' } },
+                    el( 'span', { style: { display: 'block', textAlign: 'center', paddingTop: '60px', color: '#999' } }, __( 'Image not available', 'text-domain' ) )
+                ),
+                showDate && el( 
+                    'p', 
+                    { style: { color: '#666', fontSize: '14px' } }, 
+                    __( 'November 1, 2024', 'text-domain' ) 
+                ),
+                showExcerpt && el( 
+                    'p', 
+                    { style: { color: '#333', fontSize: '16px' } }, 
+                    __( 'Example of post content or excerpt that will be displayed here.', 'text-domain' ) 
+                ),
+                showArrows && el(
+                    'div',
+                    { style: { display: 'flex', justifyContent: 'space-between', marginTop: '10px' } },
+                    el(
+                        'button',
+                        { style: { backgroundColor: arrowBackgroundColor, color: arrowColor, border: 'none', cursor: 'pointer', padding: '10px' } },
+                        '◀'
+                    ),
+                    el(
+                        'button',
+                        { style: { backgroundColor: arrowBackgroundColor, color: arrowColor, border: 'none', cursor: 'pointer', padding: '10px' } },
+                        '▶'
+                    )
+                ),
                 el(
                     InspectorControls,
                     {},
@@ -111,6 +155,30 @@
                                 value: textColor,
                                 onChange: value => setAttributes({ textColor: value })
                             }
+                        ),
+                        el(
+                            'p',
+                            { style: { marginBottom: '5px' } },
+                            'Arrow Background Color'
+                        ),
+                        el(
+                            ColorPalette,
+                            {
+                                value: arrowBackgroundColor,
+                                onChange: value => setAttributes({ arrowBackgroundColor: value })
+                            }
+                        ),
+                        el(
+                            'p',
+                            { style: { marginBottom: '5px' } },
+                            'Arrow Color'
+                        ),
+                        el(
+                            ColorPalette,
+                            {
+                                value: arrowColor,
+                                onChange: value => setAttributes({ arrowColor: value })
+                            }
                         )
                     )
                 )
@@ -125,5 +193,6 @@
     window.wp.blocks,
     window.wp.element,
     window.wp.blockEditor,
-    window.wp.components
+    window.wp.components,
+    window.wp.i18n
 ) );

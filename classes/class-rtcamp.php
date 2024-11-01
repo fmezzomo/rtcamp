@@ -8,40 +8,45 @@ class RTCamp {
     }
 
     public function register_slideshow_block() {
-        $default_attributes = array(
-            'url'             => $this->URLAPI,
-            'showTitle'       => true,
-            'showExcerpt'     => false,
-            'showDate'        => true,
-            'autoScroll'      => false,
-            'scrollInterval'  => 5,
-            'showArrows'      => true,
-            'backgroundColor' => '#ffffff',
-            'textColor'       => '#000000',
+        $defaultAttributes = array(
+            'textDomain'           => 'rtcamp',
+            'url'                  => $this->URLAPI,
+            'showTitle'            => true,
+            'showExcerpt'          => false,
+            'showDate'             => true,
+            'autoScroll'           => false,
+            'scrollInterval'       => 5,
+            'showArrows'           => true,
+            'backgroundColor'      => '#ffffff',
+            'textColor'            => '#000000',
+            'arrowColor'           => '#ffffff',
+            'arrowBackgroundColor' => '#000000',
         );
 
         wp_register_script(
             'rtcamp-slideshow-block',
             plugins_url( '../js/block.js', __FILE__ ),
-            array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components' ),
+            array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n' ),
         );
 
-        wp_localize_script( 'rtcamp-slideshow-block', 'rtcampDefaults', $default_attributes );
+        wp_localize_script( 'rtcamp-slideshow-block', 'rtcampDefaults', $defaultAttributes );
 
 
         register_block_type( 'rtcamp/slideshow', array(
             'editor_script'   => 'rtcamp-slideshow-block',
             'render_callback' => array( $this, 'render_slideshow' ),
             'attributes'      => array(
-                'url'             => array( 'type' => 'string', 'default' => $default_attributes[ 'url' ] ),
-                'showTitle'       => array( 'type' => 'boolean', 'default' => $default_attributes[ 'showTitle' ] ),
-                'showExcerpt'     => array( 'type' => 'boolean', 'default' => $default_attributes[ 'showExcerpt' ] ),
-                'showDate'        => array( 'type' => 'boolean', 'default' => $default_attributes[ 'showDate' ] ),
-                'autoScroll'      => array( 'type' => 'boolean', 'default' => $default_attributes[ 'autoScroll' ] ),
-                'scrollInterval'  => array( 'type' => 'number', 'default' => $default_attributes[ 'scrollInterval' ] ),
-                'showArrows'      => array( 'type' => 'boolean', 'default' => $default_attributes[ 'showArrows' ] ),
-                'backgroundColor' => array( 'type' => 'string', 'default' => $default_attributes[ 'backgroundColor' ] ),
-                'textColor'       => array( 'type' => 'string', 'default' => $default_attributes[ 'textColor' ] ),
+                'url'                  => array( 'type' => 'string', 'default' => $defaultAttributes[ 'url' ] ),
+                'showTitle'            => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'showTitle' ] ),
+                'showExcerpt'          => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'showExcerpt' ] ),
+                'showDate'             => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'showDate' ] ),
+                'autoScroll'           => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'autoScroll' ] ),
+                'scrollInterval'       => array( 'type' => 'number', 'default' => $defaultAttributes[ 'scrollInterval' ] ),
+                'showArrows'           => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'showArrows' ] ),
+                'backgroundColor'      => array( 'type' => 'string', 'default' => $defaultAttributes[ 'backgroundColor' ] ),
+                'textColor'            => array( 'type' => 'string', 'default' => $defaultAttributes[ 'textColor' ] ),
+                'arrowColor'           => array( 'type' => 'string', 'default' => $defaultAttributes[ 'arrowColor' ] ),
+                'arrowBackgroundColor' => array( 'type' => 'string', 'default' => $defaultAttributes[ 'arrowBackgroundColor' ] ),
             ),
         ));
     }
@@ -89,47 +94,49 @@ class RTCamp {
             return '<div>No posts found.</div>';
         }
 
-        $showTitle = $attributes['showTitle'];
-        $showExcerpt = $attributes['showExcerpt'];
-        $showDate = $attributes['showDate'];
-        $autoScroll = $attributes['autoScroll'];
-        $scrollInterval = $attributes['scrollInterval'];
-        $showArrows = $attributes['showArrows'];
-        $backgroundColor = $attributes['backgroundColor'];
-        $textColor = $attributes['textColor'];
+        $showTitle            = $attributes[ 'showTitle' ];
+        $showExcerpt          = $attributes[ 'showExcerpt' ];
+        $showDate             = $attributes[ 'showDate' ];
+        $autoScroll           = $attributes[ 'autoScroll' ];
+        $scrollInterval       = $attributes[ 'scrollInterval' ];
+        $showArrows           = $attributes[ 'showArrows' ];
+        $backgroundColor      = $attributes[ 'backgroundColor' ];
+        $textColor            = $attributes[ 'textColor' ];
+        $arrowColor           = $attributes[ 'arrowColor' ];
+        $arrowBackgroundColor = $attributes[ 'arrowBackgroundColor' ];
 
         $output  = '<div class="slideshow-container">';
         $output .= '    <input type="text" id="url-input" placeholder="Enter URL..." />';
         $output .= '    <button id="change-slideshow">Apply URL</button>';
         $output .= '    <div class="slideshow">';
 
-        foreach ($posts as $post) {
+        foreach ( $posts as $post ) {
             $output .= '<div class="slide">';
-            $output .= '<a href="' . esc_url($post['link']) . '" target="_blank">';
+            $output .= '<a href="' . esc_url( $post[ 'link' ] ) . '" target="_blank">';
     
             if ($showTitle) {
-                $output .= '<h2 style="color:' . esc_attr($textColor) . ';">' . esc_html($post['title']['rendered']) . '</h2>';
+                $output .= '<h2 style="color:' . esc_attr( $textColor ) . ';">' . esc_html( $post[ 'title' ][ 'rendered' ] ) . '</h2>';
             }
     
             if (isset($post['jetpack_featured_media_url'])) {
-                $output .= '<img src="' . esc_url($post['jetpack_featured_media_url']) . '" alt="' . esc_attr($post['title']['rendered']) . '" />';
+                $output .= '<img src="' . esc_url( $post[ 'jetpack_featured_media_url' ] ) . '" alt="' . esc_attr( $post[ 'title' ][ 'rendered' ] ) . '" />';
             }
     
             if ($showDate) {
-                $output .= '<p>' . esc_html(date('F j, Y', strtotime($post['date']))) . '</p>';
+                $output .= '<p>' . esc_html( date( 'F j, Y', strtotime( $post[ 'date' ] ) ) ) . '</p>';
             }
     
             if ($showExcerpt) {
-                $output .= '<p>' . esc_html($post['excerpt']['rendered']) . '</p>';
+                $output .= '<p>' . esc_html( $post[ 'excerpt' ][ 'rendered' ] ) . '</p>';
             }
     
             $output .= '</a>';
             $output .= '</div>';
         }
     
-        if ($showArrows) {
-            $output .= '<button class="prev">Previous</button>';
-            $output .= '<button class="next">Next</button>';
+        if ( $showArrows ) {
+            $output .= '<button class="prev" style="background-color:' . esc_attr( $arrowBackgroundColor ) . '; color:' . esc_attr( $arrowColor ) . ';">Previous</button>';
+            $output .= '<button class="next" style="background-color:' . esc_attr( $arrowBackgroundColor ) . '; color:' . esc_attr( $arrowColor ) . ';">Next</button>';
         }
     
         $output .= '</div>';
