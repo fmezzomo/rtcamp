@@ -27,6 +27,24 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'ArrowLeft') changeSlide(-1);
     });
 
+    // Mobile navigation
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function handleGesture() {
+        if (touchEndX < touchStartX) changeSlide(1); // Swipe left
+        if (touchEndX > touchStartX) changeSlide(-1); // Swipe right
+    }
+
+    document.addEventListener('touchstart', (event) => {
+        touchStartX = event.changedTouches[0].screenX;
+    });
+
+    document.addEventListener('touchend', (event) => {
+        touchEndX = event.changedTouches[0].screenX;
+        handleGesture();
+    });
+
     const urlInput = document.getElementById('url-input');
     const changeButton = document.getElementById('change-slideshow');
 
