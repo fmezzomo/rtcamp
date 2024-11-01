@@ -20,6 +20,7 @@
             imageUrl: { type: 'string', default: rtcampDefaults.imageUrl },
             showExcerpt: { type: 'boolean', default: rtcampDefaults.showExcerpt },
             showDate: { type: 'boolean', default: rtcampDefaults.showDate },
+            transitionEffect: { type: 'boolean', default: rtcampDefaults.transitionEffect },
             autoScroll: { type: 'boolean', default: rtcampDefaults.autoScroll },
             scrollInterval: { type: 'number', default: rtcampDefaults.scrollInterval },
             showArrows: { type: 'boolean', default: rtcampDefaults.showArrows },
@@ -33,7 +34,21 @@
 
         edit: function( props ) {
             const { attributes, setAttributes } = props;
-            const { textDomain, showTitle, imageUrl, showExcerpt, showDate, autoScroll, scrollInterval, showArrows, backgroundColor, textColor, arrowIconLeft, arrowIconRight, arrowColor, arrowBackgroundColor } = attributes;
+            const { textDomain,
+                    showTitle,
+                    imageUrl,
+                    showExcerpt,
+                    showDate,
+                    transitionEffect,
+                    autoScroll,
+                    scrollInterval,
+                    showArrows,
+                    backgroundColor,
+                    textColor,
+                    arrowIconLeft,
+                    arrowIconRight,
+                    arrowColor,
+                    arrowBackgroundColor } = attributes;
 
             return el(
                 'div',
@@ -124,6 +139,14 @@
                                 label: 'Show Date',
                                 checked: showDate,
                                 onChange: value => setAttributes({ showDate: value })
+                            }
+                        ),
+                        el(
+                            ToggleControl,
+                            {
+                                label: 'Apply Transition Effect',
+                                checked: transitionEffect,
+                                onChange: value => setAttributes({ transitionEffect: value })
                             }
                         ),
                         el(

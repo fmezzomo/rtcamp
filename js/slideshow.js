@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const slides = document.querySelectorAll('.slide');
+    const transitionEffect = document.getElementById('transition-effect');
     let currentIndex = 0;
 
     // Show the first slide
@@ -8,10 +9,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function changeSlide(direction) {
-        slides[currentIndex].style.display = 'none';
-        currentIndex = (currentIndex + direction + slides.length) % slides.length;
-        slides[currentIndex].style.display = 'block';
+        if (transitionEffect) {
+            slides[currentIndex].style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            slides[currentIndex].style.opacity = 0;
+            slides[currentIndex].style.transform = direction === 1 ? 'translateX(-100%)' : 'translateX(100%)';
+            previousIndex = currentIndex;
+        
+            currentIndex = (currentIndex + direction + slides.length) % slides.length;
+        
+            setTimeout(() => {
+                setTimeout(() => {
+                    slides[currentIndex].style.display = 'block';
+                    slides[currentIndex].style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    slides[currentIndex].style.opacity = 1;
+                    slides[currentIndex].style.transform = 'translateX(0)';
+
+                    slides[previousIndex].style.display = 'none';
+                }, 500);
+            }, 50);
+        } else {
+            slides[currentIndex].style.display = 'none';
+            currentIndex = (currentIndex + direction + slides.length) % slides.length;
+            slides[currentIndex].style.display = 'block';
+        }
     }
+    
 
     const nextButton = document.querySelector('.next');
     const prevButton = document.querySelector('.prev');

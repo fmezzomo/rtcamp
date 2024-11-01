@@ -17,6 +17,7 @@ class RTCamp {
             'imageUrl'             => plugins_url( '../img/image.jpg', __FILE__ ),
             'showExcerpt'          => false,
             'showDate'             => true,
+            'transitionEffect'     => true,
             'autoScroll'           => false,
             'scrollInterval'       => 5,
             'showArrows'           => true,
@@ -47,6 +48,7 @@ class RTCamp {
                 'imageUrl'             => array( 'type' => 'string', 'default'  => $defaultAttributes[ 'imageUrl' ] ),
                 'showExcerpt'          => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'showExcerpt' ] ),
                 'showDate'             => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'showDate' ] ),
+                'transitionEffect'     => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'transitionEffect' ] ),
                 'autoScroll'           => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'autoScroll' ] ),
                 'scrollInterval'       => array( 'type' => 'number', 'default'  => $defaultAttributes[ 'scrollInterval' ] ),
                 'showArrows'           => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'showArrows' ] ),
@@ -63,12 +65,12 @@ class RTCamp {
     // Enqueue block editor script and style
     function slideshow_block_assets() {
         wp_enqueue_style(
-            'my-slideshow-style',
+            'rtcamp-slideshow-style',
             plugins_url( '../css/style.css', __FILE__ ),
         );
 
         wp_enqueue_script(
-            'my-slideshow-script',
+            'rtcamp-slideshow-script',
             plugins_url( '../js/slideshow.js', __FILE__ ),
             array(),
             '1.0',
@@ -137,6 +139,7 @@ class RTCamp {
         $showTitle            = $attributes[ 'showTitle' ];
         $showExcerpt          = $attributes[ 'showExcerpt' ];
         $showDate             = $attributes[ 'showDate' ];
+        $transitionEffect     = $attributes[ 'transitionEffect' ];
         $autoScroll           = $attributes[ 'autoScroll' ];
         $scrollInterval       = $attributes[ 'scrollInterval' ];
         $showArrows           = $attributes[ 'showArrows' ];
@@ -150,6 +153,10 @@ class RTCamp {
         $output  = '<div >';
         $output .=     $urlContainer;
         $output .= '    <div class="slideshow" class="slideshow-container" style="background-color:' . esc_attr( $backgroundColor ) . ';">';
+
+        if ( $transitionEffect ) {
+            $output .= '        <input type="hidden" name="transition-effect" id="transition-effect" value="1">';
+        }
     
         if ( $showArrows ) {
             $output .= '<div class="arrows">';
