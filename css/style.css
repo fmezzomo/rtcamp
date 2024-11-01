@@ -6,6 +6,10 @@
     width: 85%;
 }
 
+.text-url-fetch {
+    font-size: 10px;
+}
+
 .slideshow {
     position: relative;
     overflow: hidden;

@@ -85,25 +85,29 @@ class RTCamp {
 
     public function render_slideshow( $attributes ) {
 
+        $tryCache   = true;
         $textDomain = $attributes[ 'textDomain' ];
+        $inputURL   = $attributes[ 'url' ];
 
         $urlContainer  = '    <div class="url-container">';
-        $urlContainer .= '        <input type="text" id="url-input" placeholder="' . __( 'Enter URL to get Data...', $textDomain ) . '" />';
-        $urlContainer .= '        <button id="change-slideshow">' . __( 'Apply URL', $textDomain ) . '</button>';
-        $urlContainer .= '    </div>';
+        $urlContainer .= '      <input type="text" id="url-input" placeholder="' . __( 'Enter URL to get Data...', $textDomain ) . '" />';
+        $urlContainer .= '      <button id="change-slideshow">' . __( 'Apply URL', $textDomain ) . '</button>';
 
-        $tryCache = true;
-        $inputURL = $attributes[ 'url' ];
         if ( isset( $_GET[ 'url' ] ) ) {
             $inputURL = trim( $_GET[ 'url' ] );
 
             // Get cache data only for the known API
             $tryCache = false;
+
+            $urlContainer .= '  <span class="text-url-fetch">' . __( 'Fetching data from', $textDomain ) . ': ' . $_GET[ 'url' ] . '</span>';
         }
     
+        $urlContainer .= '    </div>';
+
         if ( ! preg_match( "~^(?:f|ht)tps?://~i", $inputURL ) ) {
             $inputURL = 'https://' . $inputURL;
         }
+
 
         $url = filter_var( $inputURL, FILTER_VALIDATE_URL ) ? esc_url_raw( $inputURL ) : $this->URLAPI;
 
