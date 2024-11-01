@@ -1,6 +1,8 @@
 <?php
 class RTCamp {
-    private $URLAPI = 'https://wptavern.com';
+    private $URLAPI        = 'https://wptavern.com';
+    private $transientKey  = 'rtcamp_slideshow_posts';
+    private $cacheTime     = 12 * HOUR_IN_SECONDS; // 12 hours
 
     public function __construct() {
         add_action( 'init', array( $this, 'register_slideshow_block' ) );
@@ -80,27 +82,46 @@ class RTCamp {
 
     public function render_slideshow( $attributes ) {
 
-        $input_url = isset( $_GET[ 'url' ] ) ? trim( $_GET[ 'url' ] ) : $attributes[ 'url' ];
+        $tryCache = true;
+        $inputURL = $attributes[ 'url' ];
+        if ( isset( $_GET[ 'url' ] ) ) {
+            $inputURL = trim( $_GET[ 'url' ] );
+
+            // Get cache data only for the known API
+            $tryCache = false;
+        }
     
-        if ( ! preg_match( "~^(?:f|ht)tps?://~i", $input_url ) ) {
-            $input_url = 'https://' . $input_url;
+        if ( ! preg_match( "~^(?:f|ht)tps?://~i", $inputURL ) ) {
+            $inputURL = 'https://' . $inputURL;
         }
 
-        $url = filter_var( $input_url, FILTER_VALIDATE_URL ) ? esc_url_raw( $input_url ) : $this->URLAPI;
+        $url = filter_var( $inputURL, FILTER_VALIDATE_URL ) ? esc_url_raw( $inputURL ) : $this->URLAPI;
 
-        $parsedUrl = parse_url( $url );
-        $domain    = isset( $parsedUrl[ 'scheme'] ) ? $parsedUrl[ 'scheme' ] . '://' . $parsedUrl[ 'host' ] : $parsedUrl[ 'host' ];
+        // Check if posts are already cached
+        $posts = $tryCache ? get_transient( $this->transientKey ) : false ;
 
-        $apiUrl = rtrim( $domain, '/' ) . '/wp-json/wp/v2/posts';
+        // If not cached, fetch from API
+        if ( $posts === false ) {
 
-        $response = wp_remote_get( $apiUrl );
+            $parsedUrl = parse_url( $url );
+            $domain    = isset( $parsedUrl[ 'scheme'] ) ? $parsedUrl[ 'scheme' ] . '://' . $parsedUrl[ 'host' ] : $parsedUrl[ 'host' ];
 
-        if ( is_wp_error( $response ) ) {
-            return '<div>Error fetching posts.</div>';
+            $apiUrl = rtrim( $domain, '/' ) . '/wp-json/wp/v2/posts';
+
+            $response = wp_remote_get( $apiUrl );
+
+            if ( is_wp_error( $response ) ) {
+                return '<div>Error fetching posts.</div>';
+            }
+
+            $posts = json_decode( wp_remote_retrieve_body( $response ), true );
+
+            // Cache the posts for the period defined into the cacheTime var
+            if ( $tryCache ) {
+                set_transient( $this->transientKey, $posts, $this->cacheTime );
+            }
         }
 
-        $posts = json_decode( wp_remote_retrieve_body( $response ), true );
-        
         if ( empty( $posts ) ) {
             return '<div>No posts found.</div>';
         }
