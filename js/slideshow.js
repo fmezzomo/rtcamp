@@ -13,8 +13,13 @@ document.addEventListener('DOMContentLoaded', function() {
         slides[currentIndex].style.display = 'block';
     }
 
-    document.querySelector('.next').addEventListener('click', () => changeSlide(1));
-    document.querySelector('.prev').addEventListener('click', () => changeSlide(-1));
+    const nextButton = document.querySelector('.next');
+    const prevButton = document.querySelector('.prev');
+    
+    if (nextButton && prevButton) {
+        nextButton.addEventListener('click', () => changeSlide(1));
+        prevButton.addEventListener('click', () => changeSlide(-1));
+    }
 
     // Keyboard navigation
     document.addEventListener('keydown', (e) => {
