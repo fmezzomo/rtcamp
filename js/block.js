@@ -77,7 +77,7 @@
                     ),
                     showExcerpt && el( 
                         'p', 
-                        { style: { color: '#333', fontSize: '16px' } }, 
+                        { style: { color: textColor } }, 
                         __( 'Example of post content or excerpt that will be displayed here.', textDomain ) 
                     ),
                 ),

@@ -174,22 +174,22 @@ class RTCamp {
             $output .= '<div class="slide" style="color:' . esc_attr( $textColor ) . ';">';
             $output .= '<a href="' . esc_url( $post[ 'link' ] ) . '" target="_blank">';
     
-            if ($showTitle) {
+            if ( $showTitle ) {
                 $output .= '<h3 style="color:' . esc_attr( $textColor ) . ';">' . esc_html( $post[ 'title' ][ 'rendered' ] ) . '</h3>';
             }
     
-            if (isset($post['jetpack_featured_media_url'])) {
+            if ( isset( $post[ 'jetpack_featured_media_url' ] ) ) {
                 $output .= '<img src="' . esc_url( $post[ 'jetpack_featured_media_url' ] ) . '" alt="' . esc_attr( $post[ 'title' ][ 'rendered' ] ) . '" />';
             }
     
             $output .= '</a>';
 
-            if ($showDate) {
+            if ( $showDate ) {
                 $output .= '<p>' . esc_html( date( 'F j, Y', strtotime( $post[ 'date' ] ) ) ) . '</p>';
             }
     
-            if ($showExcerpt) {
-                $output .= '<p>' . esc_html( $post[ 'excerpt' ][ 'rendered' ] ) . '</p>';
+            if ( $showExcerpt ) {
+                $output .= '<p>' . wp_kses_post( $post[ 'excerpt' ][ 'rendered' ] ) . '</p>';
             }
     
             $output .= '</div>';
@@ -199,12 +199,12 @@ class RTCamp {
         $output .= '</div>';
     
         // Add JavaScript for auto-scroll if enabled
-        if ($autoScroll) {
+        if ( $autoScroll ) {
             $output .= '<script>
                 document.addEventListener("DOMContentLoaded", function() {
                     let interval = setInterval(() => {
                         document.querySelector(".next").click();
-                    }, ' . ($scrollInterval * 1000) . ');
+                    }, ' . ( $scrollInterval * 1000 ) . ');
                 });
             </script>';
         }
