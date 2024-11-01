@@ -1,6 +1,10 @@
 .slideshow {
     position: relative;
     overflow: hidden;
+
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 .slideshow .arrows button {
@@ -12,6 +16,10 @@
     font-size: 2rem;
     cursor: pointer;
     z-index: 10;
+}
+
+.slideshow a {
+    text-decoration: none;
 }
 
 .prev {

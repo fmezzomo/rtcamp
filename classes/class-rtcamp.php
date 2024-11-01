@@ -12,6 +12,7 @@ class RTCamp {
             'textDomain'           => 'rtcamp',
             'url'                  => $this->URLAPI,
             'showTitle'            => true,
+            'imageUrl'             => plugins_url( '../img/image.jpg', __FILE__ ),
             'showExcerpt'          => false,
             'showDate'             => true,
             'autoScroll'           => false,
@@ -38,19 +39,20 @@ class RTCamp {
             'editor_script'   => 'rtcamp-slideshow-block',
             'render_callback' => array( $this, 'render_slideshow' ),
             'attributes'      => array(
-                'url'                  => array( 'type' => 'string', 'default' => $defaultAttributes[ 'url' ] ),
+                'url'                  => array( 'type' => 'string', 'default'  => $defaultAttributes[ 'url' ] ),
                 'showTitle'            => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'showTitle' ] ),
+                'imageUrl'             => array( 'type' => 'string', 'default'  => $defaultAttributes[ 'imageUrl' ] ),
                 'showExcerpt'          => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'showExcerpt' ] ),
                 'showDate'             => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'showDate' ] ),
                 'autoScroll'           => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'autoScroll' ] ),
-                'scrollInterval'       => array( 'type' => 'number', 'default' => $defaultAttributes[ 'scrollInterval' ] ),
+                'scrollInterval'       => array( 'type' => 'number', 'default'  => $defaultAttributes[ 'scrollInterval' ] ),
                 'showArrows'           => array( 'type' => 'boolean', 'default' => $defaultAttributes[ 'showArrows' ] ),
-                'backgroundColor'      => array( 'type' => 'string', 'default' => $defaultAttributes[ 'backgroundColor' ] ),
-                'textColor'            => array( 'type' => 'string', 'default' => $defaultAttributes[ 'textColor' ] ),
-                'arrowIconLeft'        => array( 'type' => 'string', 'default' => $defaultAttributes[ 'arrowIconLeft' ] ),
-                'arrowIconRight'       => array( 'type' => 'string', 'default' => $defaultAttributes[ 'arrowIconRight' ] ),
-                'arrowColor'           => array( 'type' => 'string', 'default' => $defaultAttributes[ 'arrowColor' ] ),
-                'arrowBackgroundColor' => array( 'type' => 'string', 'default' => $defaultAttributes[ 'arrowBackgroundColor' ] ),
+                'backgroundColor'      => array( 'type' => 'string', 'default'  => $defaultAttributes[ 'backgroundColor' ] ),
+                'textColor'            => array( 'type' => 'string', 'default'  => $defaultAttributes[ 'textColor' ] ),
+                'arrowIconLeft'        => array( 'type' => 'string', 'default'  => $defaultAttributes[ 'arrowIconLeft' ] ),
+                'arrowIconRight'       => array( 'type' => 'string', 'default'  => $defaultAttributes[ 'arrowIconRight' ] ),
+                'arrowColor'           => array( 'type' => 'string', 'default'  => $defaultAttributes[ 'arrowColor' ] ),
+                'arrowBackgroundColor' => array( 'type' => 'string', 'default'  => $defaultAttributes[ 'arrowBackgroundColor' ] ),
             ),
         ));
     }
@@ -112,25 +114,41 @@ class RTCamp {
         $backgroundColor      = $attributes[ 'backgroundColor' ];
         $textColor            = $attributes[ 'textColor' ];
         $arrowColor           = $attributes[ 'arrowColor' ];
+        $arrowIconLeft        = $attributes[ 'arrowIconLeft' ];
+        $arrowIconRight       = $attributes[ 'arrowIconRight' ];
         $arrowBackgroundColor = $attributes[ 'arrowBackgroundColor' ];
 
         $output  = '<div class="slideshow-container">';
         $output .= '    <input type="text" id="url-input" placeholder="Enter URL..." />';
         $output .= '    <button id="change-slideshow">Apply URL</button>';
         $output .= '    <div class="slideshow">';
+    
+        if ( $showArrows ) {
+            $output .= '<div class="arrows">';
+            $output .= '    <button class="prev" style="background-color:' . esc_attr( $arrowBackgroundColor ) . '; color:' . esc_attr( $arrowColor ) . ';">';
+            $output .= '        <i class="fas ' . esc_attr( $arrowIconLeft ) . '"></i>';
+            $output .= '    </button>';
+
+            $output .= '    <button class="next" style="background-color:' . esc_attr( $arrowBackgroundColor ) . '; color:' . esc_attr( $arrowColor ) . ';">';
+            $output .= '        <i class="fas ' . esc_attr( $arrowIconRight ) . '"></i>';
+            $output .= '    </button>';
+            $output .= '</div>';
+        }
 
         foreach ( $posts as $post ) {
-            $output .= '<div class="slide">';
+            $output .= '<div class="slide" style="color:' . esc_attr( $textColor ) . ';">';
             $output .= '<a href="' . esc_url( $post[ 'link' ] ) . '" target="_blank">';
     
             if ($showTitle) {
-                $output .= '<h2 style="color:' . esc_attr( $textColor ) . ';">' . esc_html( $post[ 'title' ][ 'rendered' ] ) . '</h2>';
+                $output .= '<h3 style="color:' . esc_attr( $textColor ) . ';">' . esc_html( $post[ 'title' ][ 'rendered' ] ) . '</h3>';
             }
     
             if (isset($post['jetpack_featured_media_url'])) {
                 $output .= '<img src="' . esc_url( $post[ 'jetpack_featured_media_url' ] ) . '" alt="' . esc_attr( $post[ 'title' ][ 'rendered' ] ) . '" />';
             }
     
+            $output .= '</a>';
+
             if ($showDate) {
                 $output .= '<p>' . esc_html( date( 'F j, Y', strtotime( $post[ 'date' ] ) ) ) . '</p>';
             }
@@ -139,19 +157,6 @@ class RTCamp {
                 $output .= '<p>' . esc_html( $post[ 'excerpt' ][ 'rendered' ] ) . '</p>';
             }
     
-            $output .= '</a>';
-            $output .= '</div>';
-        }
-    
-        if ( $showArrows ) {
-            $output .= '<div class="arrows">';
-            $output .= '    <button class="prev" style="background-color:' . esc_attr( $attributes[ 'arrowBackgroundColor' ] ) . '; color:' . esc_attr( $attributes[ 'arrowColor' ] ) . ';">';
-            $output .= '        <i class="fas ' . esc_attr( $attributes[ 'arrowIconLeft' ] ) . '"></i>';
-            $output .= '    </button>';
-
-            $output .= '    <button class="next" style="background-color:' . esc_attr( $attributes[ 'arrowBackgroundColor' ] ) . '; color:' . esc_attr( $attributes[ 'arrowColor' ] ) . ';">';
-            $output .= '        <i class="fas ' . esc_attr( $attributes[ 'arrowIconRight' ] ) . '"></i>';
-            $output .= '    </button>';
             $output .= '</div>';
         }
     

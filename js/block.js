@@ -16,6 +16,7 @@
         attributes: {
             url: { type: 'string', default: rtcampDefaults.url },
             showTitle: { type: 'boolean', default: rtcampDefaults.showTitle },
+            imageUrl: { type: 'string', default: rtcampDefaults.imageUrl },
             showExcerpt: { type: 'boolean', default: rtcampDefaults.showExcerpt },
             showDate: { type: 'boolean', default: rtcampDefaults.showDate },
             autoScroll: { type: 'boolean', default: rtcampDefaults.autoScroll },
@@ -31,38 +32,38 @@
 
         edit: function( props ) {
             const { attributes, setAttributes } = props;
-            const { showTitle, showExcerpt, showDate, autoScroll, scrollInterval, showArrows, backgroundColor, textColor, arrowIconLeft, arrowIconRight, arrowColor, arrowBackgroundColor } = attributes;
+            const { showTitle, imageUrl, showExcerpt, showDate, autoScroll, scrollInterval, showArrows, backgroundColor, textColor, arrowIconLeft, arrowIconRight, arrowColor, arrowBackgroundColor } = attributes;
 
             return el(
                 'div',
-                { className: 'slideshow',
-                style: { 
-                    backgroundColor, 
-                    color: textColor, 
-                    padding: '20px', 
-                    border: '1px solid #ccc', 
-                    borderRadius: '5px'
-                } 
+                    { className: 'slideshow',
+                    style: { 
+                        backgroundColor: backgroundColor,
+                    } 
                 },
-                showTitle && el( 
-                    'p', 
-                    { style: { fontWeight: 'bold', fontSize: '18px', marginBottom: '10px' } }, 
-                    __( 'Example Post Title', 'text-domain' ) 
-                ),
                 el(
                     'div',
-                    { style: { width: '100%', height: '300px', backgroundColor: '#eaeaea', marginBottom: '10px' } },
-                    el( 'span', { style: { display: 'block', textAlign: 'center', paddingTop: '140px', color: '#999' } }, __( 'Image not available', 'text-domain' ) )
-                ),
-                showDate && el( 
-                    'p', 
-                    { style: { color: '#666', fontSize: '14px' } }, 
-                    __( 'November 1, 2024', 'text-domain' ) 
-                ),
-                showExcerpt && el( 
-                    'p', 
-                    { style: { color: '#333', fontSize: '16px' } }, 
-                    __( 'Example of post content or excerpt that will be displayed here.', 'text-domain' ) 
+                        { className: 'slide' },
+                    showTitle && el( 
+                        'h3', 
+                        { style: { color: textColor } }, 
+                        __( 'Example Post Title', 'text-domain' ) 
+                    ),
+                    el( 'img', { 
+                        src: imageUrl,
+                        style: { 
+                        } 
+                    } ),
+                    showDate && el( 
+                        'p', 
+                        { style: { color: textColor } }, 
+                        __( 'November 1, 2024', 'text-domain' ) 
+                    ),
+                    showExcerpt && el( 
+                        'p', 
+                        { style: { color: '#333', fontSize: '16px' } }, 
+                        __( 'Example of post content or excerpt that will be displayed here.', 'text-domain' ) 
+                    ),
                 ),
                 showArrows && el(
                     'div',
@@ -70,8 +71,8 @@
                     el(
                         'button',
                         {
+                            className: 'prev',
                             style: {
-                                left: '30px',
                                 backgroundColor: arrowBackgroundColor,
                                 color: arrowColor,
                                 border: 'none',
@@ -83,8 +84,8 @@
                     el(
                         'button',
                         {
+                            className: 'next',
                             style: {
-                                right: '30px',
                                 backgroundColor: arrowBackgroundColor,
                                 color: arrowColor,
                                 border: 'none',
