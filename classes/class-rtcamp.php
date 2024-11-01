@@ -23,7 +23,7 @@ class RTCamp {
         wp_register_script(
             'rtcamp-slideshow-block',
             plugins_url( '../js/block.js', __FILE__ ),
-            array( 'wp-blocks', 'wp-element', 'wp-editor' ),
+            array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components' ),
         );
 
         wp_localize_script( 'rtcamp-slideshow-block', 'rtcampDefaults', $default_attributes );
